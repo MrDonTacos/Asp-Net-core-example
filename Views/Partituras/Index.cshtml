@@ -1,0 +1,52 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<body>
+<!--  <div class="card" id="carta" style="width: 18rem;">
+  <img class="card-img-top" src="" alt="Card image cap">
+  <div class="card-body" id="cuerpo-carta">
+    <h5 class="card-title">El arpa del guerrero</h5>
+    <p class="card-text">Partitura de la obra de Leo Brouwer "El decameron Negro"</p>
+    <a href="#" class="btn btn-primary">Editar</a>
+  </div>
+</div>-->
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+</body>
+
+@section scripts {
+<script>
+    $(document).ready(function () {
+        cargarPeliculas();
+    });
+    const cargarPeliculas = (busqueda) => {
+       
+        busqueda=" ";
+         console.log(busqueda);
+        $.ajax({
+            url: `/api/partitura/items`,
+            data: {busqueda},
+            dataType: 'json'
+        }).then((data) => {
+            console.log(data);
+            $("#carta").remove();
+                data.forEach( (partitura) => {
+                    $("body").append(`<div class="card" id="carta" style="display: inline-block; margin-left: 40px; margin-top: 20px; width: 18rem;">
+                    <img class="card-img-top" src="${partitura.genre}" alt="Card image cap">
+                    <div class="card-body" id="cuerpo-carta">
+                    <h5 class="card-title">${partitura.title}</h5>
+                    <p class="card-text">Duración(seg): ${partitura.time}<br> Precio: ${partitura.price}<br> Fecha de lanzamiento: ${partitura.releaseDate} </p>
+                    <a href="partituras/edit/${partitura.id}" class="btn btn-primary">Editar</a>
+                    </div>
+                    </div>`
+                    );
+                    })
+                    
+          });
+        }
+        
+</script>
+}
